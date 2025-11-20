@@ -1,0 +1,18 @@
+{
+    "dogs" : [ {
+
+    
+    "message": "https://images.dog.ceo/breeds/shihtzu/n02086240_6222.jpg",
+    "status": "success"
+    },
+    {
+    "message": "https://images.dog.ceo/breeds/retriever-chesapeake/n02099849_1050.jpg",
+    "status": "success"
+},
+{
+    "message": "https://images.dog.ceo/breeds/terrier-tibetan/n02097474_5662.jpg",
+    "status": "success"
+}
+
+    ]
+}
