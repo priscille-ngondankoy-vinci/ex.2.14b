@@ -1,58 +1,57 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import './App.css'
 
 
 
 const RandomDog = () => {
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+      const [imageUrl, setImageUrl] = useState<string | null>(null);
 
-  const loadDog = async () => {
-    const res = await fetch("https://dog.ceo/api/breeds/image/random");
-    const data = await res.json();
-    setImageUrl(data.message);
-  };
-  
+      const loadDog = async () => {
+        try {
+          const res = await fetch("https://dog.ceo/api/breeds/image/random");
+          const data = await res.json();
+          if (data && data.message) {
+            setImageUrl(data.message);
+          }
+        } catch (err) {
+          console.error("Failed to load dog image", err);
+        }
+      };
 
-  return (
-    <div>
-      <button onClick={loadDog}>Charger un chien</button>
-      {imageUrl && (
-        <img
-          src={imageUrl}
-          alt="Random dog"
-          style={{ width: "300px", borderRadius: "8px" }}
-        />
-      )}
-    </div>
-  );
-};
+      useEffect(() => {
+        loadDog(); // initial load
+        const interval = setInterval(loadDog, 5000); // reload every 5s
+        return () => clearInterval(interval);
+      }, []);
 
-function App() {
-  const [refreshToken, setRefreshToken] = useState(0);
-  
+      return (
+        <div>
+          {imageUrl && (
+            <img
+              src={imageUrl}
+              alt="Random dog"
+              style={{ width: "300px", borderRadius: "8px" }}
+            />
+          )}
+        </div>
+      );
+    };
 
-  const refreshDogs = () => {
-    setRefreshToken((t) => t + 1);
-  };
-  
+    function App() {
+      return (
+        <div style={{ textAlign: "center", padding: "20px" }}>
+          <h1>Random Dogs 🐶</h1>
 
-  return (
-    <div style={{ textAlign: "center", padding: "20px" }}>
-      <h1>Random Dogs 🐶</h1>
+          <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
+            <RandomDog />
+            <RandomDog />
+            <RandomDog />
+          </div>
+        </div>
+      );
+    }
 
-      <button onClick={refreshDogs} style={{ marginBottom: "20px" }}>
-        Rafraîchir les photos
-      </button>
-
-      <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
-        <RandomDog  />
-        <RandomDog  />
-        <RandomDog  />
-      </div>
-    </div>
-  );
-}
 
 
 export default App;
